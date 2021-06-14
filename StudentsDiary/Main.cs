@@ -9,6 +9,7 @@ namespace StudentsDiary
     public partial class Main : Form
     {
         private FileHelper<List<Student>> _fileHelper = new FileHelper<List<Student>>(Program.FilePath);
+        private List<Group> _groups;
 
         public bool IsMaximize 
         {
@@ -25,20 +26,51 @@ namespace StudentsDiary
 
         public Main()
         {
+
             InitializeComponent();
 
+            _groups = new List<Group>
+            {
+                new Group { Id = 0, Name = "Wybierz" },
+                new Group { Id = 1, Name = "1a" },
+                new Group { Id = 2, Name = "2b" }
+            };
+
+            InitStudentGroup();
             RefreshDiary();
 
-            SetColumnHeader();
+            //HideColumns();
 
+
+
+            SetColumnHeader();
+            
             if (IsMaximize)
                 WindowState = FormWindowState.Maximized;
+        }
 
+        //private void HideColumns()
+        //{
+        //    dgvDiary.Columns[11].Visible = true;
+        //}
+
+        private void InitStudentGroup()
+        {
+            cmbChooseClass.DataSource = _groups;
+            cmbChooseClass.DisplayMember = "Name";
+            cmbChooseClass.ValueMember = "Id";
         }
 
         private void RefreshDiary()
         {
             var students = _fileHelper.DeserializeFromFile();
+
+            var studentGroupId = (cmbChooseClass.SelectedItem as Group).Id;
+
+            if(studentGroupId != 0)
+            {
+                students = students.Where(x => x.GroupId == studentGroupId).ToList();
+            }
 
             dgvDiary.DataSource = students;
         }
@@ -55,12 +87,9 @@ namespace StudentsDiary
             dgvDiary.Columns[7].HeaderText = "Język polski";
             dgvDiary.Columns[8].HeaderText = "Język obcy";
             dgvDiary.Columns[9].HeaderText = "Dodatkowe zajęcia";
+            dgvDiary.Columns[10].HeaderText = "Klasa";
         }
         
-
-
-
-
         private void btnAdd_Click(object sender, EventArgs e)
         {
             var addEditStudent = new AddEditStudent();
@@ -124,6 +153,14 @@ namespace StudentsDiary
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
+
+            //if (cmbChooseClass.Text == "1a")
+            //    MessageBox.Show("Wybrałeś klasę 1a");
+
+            //string nazwaKlasy =_groups.Where(x => x.Name == cmbChooseClass.Text);
+
+            //MessageBox.Show(nazwaKlasy);
+
             RefreshDiary();
         }
 
@@ -136,6 +173,5 @@ namespace StudentsDiary
 
             Settings.Default.Save();
         }
-
     }
 }

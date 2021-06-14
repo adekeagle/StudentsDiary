@@ -17,10 +17,31 @@ namespace StudentsDiary
         private int _studentId;
         private Student _student;
 
+        private List<Group> _groups;
+
         public AddEditStudent(int id = 0)
         {
             InitializeComponent();
             _studentId = id;
+
+
+
+            //var studentClasses = GetStudentClass();
+
+            //foreach (var item in studentClasses)
+            //{
+            //    cboClassName.Items.Add(item.Name);
+            //}
+            //StudentGroups();
+
+            _groups = new List<Group>
+            {
+                new Group { Id = 0, Name = "Wybierz" },
+                new Group { Id = 1, Name = "1a" },
+                new Group { Id = 2, Name = "2b" }
+            };
+
+            InitStudentGroup();
 
             GetStudentData();
 
@@ -31,6 +52,13 @@ namespace StudentsDiary
         //{
         //    StudentAdded?.Invoke();
         //}
+
+        private void InitStudentGroup()
+        {
+            cboClassName.DataSource = _groups;
+            cboClassName.DisplayMember = "Name";
+            cboClassName.ValueMember = "Id";
+        }
 
         private void GetStudentData()
         {
@@ -59,7 +87,8 @@ namespace StudentsDiary
             tbPolishLang.Text = _student.PolishLang;
             tbForeignLang.Text = _student.ForeignLang;
             rtbComments.Text = _student.Comments;
-            cbIsAdditionalActivities.Checked = false;
+            cbIsAdditionalActivities.Checked = _student.AdditionalActivities;
+            cboClassName.SelectedItem = _groups.FirstOrDefault(x => x.Id == _student.GroupId);
         }
 
         private void btnConfirm_ClickAsync(object sender, EventArgs e)
@@ -67,12 +96,11 @@ namespace StudentsDiary
             var students = _fileHelper.DeserializeFromFile();
 
             //var zmienna = _student.IsParticipateInExtraActivities ? "TAK" : "NIE";
-            
+
             if (_studentId != 0)
                 students.RemoveAll(x => x.Id == _studentId);
             else
                 AssignIdToNewStudent(students);
-
 
             AddNewUserToList(students);
 
@@ -105,11 +133,13 @@ namespace StudentsDiary
                 Math = tbMath.Text,
                 Physics = tbPhysics.Text,
                 Technology = tbTechnology.Text,
-                IsParticipateInExtraActivities = cbIsAdditionalActivities.Checked ? "✓" : "✕"
-        };
+                AdditionalActivities = cbIsAdditionalActivities.Checked,
+                GroupId = (cboClassName.SelectedItem as Group).Id
+            };
 
             students.Add(student);
         }
+
 
         private void AssignIdToNewStudent(List<Student> students)
         {
@@ -123,10 +153,24 @@ namespace StudentsDiary
             Close();
         }
 
-        //private void cbIsAdditionalActivities_CheckedChanged(object sender, EventArgs e)
+        private void cbIsAdditionalActivities_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbIsAdditionalActivities.Checked)
+                _student.AdditionalActivities = true;
+            else
+                _student.AdditionalActivities = false;
+        }
+
+        private void cboClassName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        //private void cboClassName_SelectedIndexChanged(object sender, EventArgs e)
         //{
-        //      _student.IsParticipateInExtraActivities = cbIsAdditionalActivities.Checked ? "TAK" : "NIE";
-            
+        //    var studentClasses = GetStudentClass();
+
+        //    _student.GroupId = studentClasses.Where(x => x.Name == Name);
         //}
     }
 }

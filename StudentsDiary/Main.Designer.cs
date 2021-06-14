@@ -34,6 +34,7 @@ namespace StudentsDiary
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.dgvDiary = new System.Windows.Forms.DataGridView();
+            this.cmbChooseClass = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDiary)).BeginInit();
             this.SuspendLayout();
             // 
@@ -73,7 +74,7 @@ namespace StudentsDiary
             // btnRefresh
             // 
             this.btnRefresh.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.btnRefresh.Location = new System.Drawing.Point(255, 12);
+            this.btnRefresh.Location = new System.Drawing.Point(464, 12);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(75, 23);
             this.btnRefresh.TabIndex = 3;
@@ -96,12 +97,21 @@ namespace StudentsDiary
             this.dgvDiary.Size = new System.Drawing.Size(1024, 387);
             this.dgvDiary.TabIndex = 4;
             // 
+            // cmbChooseClass
+            // 
+            this.cmbChooseClass.FormattingEnabled = true;
+            this.cmbChooseClass.Location = new System.Drawing.Point(286, 14);
+            this.cmbChooseClass.Name = "cmbChooseClass";
+            this.cmbChooseClass.Size = new System.Drawing.Size(162, 21);
+            this.cmbChooseClass.TabIndex = 5;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(1048, 450);
+            this.Controls.Add(this.cmbChooseClass);
             this.Controls.Add(this.dgvDiary);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnDelete);
@@ -122,6 +132,7 @@ namespace StudentsDiary
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.DataGridView dgvDiary;
+        private System.Windows.Forms.ComboBox cmbChooseClass;
     }
 }
 
